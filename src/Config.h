@@ -4,11 +4,9 @@
 #include <Arduino.h>
 
 // --- WiFi & n8n ---
-const char* const WIFI_SSID = "It hurts when IP";
-const char* const WIFI_PASS = "Roger!2010";
-//const char* const WIFI_SSID = "Bettmeralp";
-//const char* const WIFI_PASS = "TannEck2011";
-const char* const N8N_WEBHOOK_URL = "https://n8n.keck1.com/webhook-test/c0da9e5e-1062-4191-9acf-3c0de4705036";
+const char* const WIFI_SSID = "Your WiFi SSID";
+const char* const WIFI_PASS = "Your WiFi password";
+const char* const N8N_WEBHOOK_URL = "your-n8n-webhook-url";
 
 
 // --- SD-Karte (SPI Modus) ---
