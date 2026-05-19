@@ -1,6 +1,8 @@
 #include <Arduino.h>
 #include "Config.h"
 #include "SDCardManager.h"
+#include "NetworkManager.h"
+#include "DisplayManager.h"
 #include "PlaybackManager.h"
 
 void setup() {
@@ -8,37 +10,51 @@ void setup() {
     delay(2000);
     Serial.println("\n=== AUDIO PLAYER TEST ===");
 
-    // 1. SD-Karte über deinen Manager initialisieren
+    // 1) SD-Karte initialisieren (wird für Playback und Recording benötigt)
     if (!initSDCard()) {
         Serial.println("[ERROR] SD-Karte konnte nicht gestartet werden!");
-        while (true); 
+        for (;;) { delay(1000); }
     }
 
-    // 2. Lautsprecher-Pins konfigurieren
+    // 2) Audio/Player konfigurieren
     player.begin();
 
-    // 3. Prüfen, ob Test-Datei existiert
-    if (SD.exists("/antwort.mp3")) {
+    // 3) Netzwerk und Zeit (WiFi muss für NTP verfügbar sein)
+    initWiFi();
+    initTimeSync();
+
+    // 4) Display initialisieren (zeigt Zeit/Status)
+    if (!initDisplay()) {
+        Serial.println("[WARN] Display konnte nicht initialisiert werden.");
+    }
+
+    // 5) Prüfen, ob Test-Datei existiert und abspielen
+    // Hinweis: PlaybackManager unterstützt WAV via playWav(), daher .wav verwenden
+    const char* testFile = "/antwort.wav";
+    if (SD.exists(testFile)) {
         Serial.println("[OK] Datei gefunden. Starte Wiedergabe...");
-        player.playWav("/antwort.mp3");
+        player.playWav(testFile);
     } else {
-        Serial.println("[ERROR] Datei /antwort.mp3 nicht auf SD gefunden!");
-        Serial.println("Stelle sicher, dass eine Datei mit diesem Namen existiert.");
+        Serial.printf("[ERROR] Datei %s nicht auf SD gefunden!\n", testFile);
+        Serial.println("Stelle sicher, dass eine WAV-Datei mit diesem Namen existiert.");
     }
 }
 
 void loop() {
-    // Ganz wichtig: Der PlaybackManager braucht Rechenzeit!
+    // PlaybackManager benötigt regelmäßige Verarbeitung
     player.loop();
 
     // Status-Update alle 5 Sekunden im Serial Monitor
-    static unsigned long lastCheck = 0;
-    if (millis() - lastCheck > 5000) {
+    static unsigned long lastStatusMillis = 0;
+    if (millis() - lastStatusMillis > 5000) {
         if (player.isPlaying()) {
             Serial.println("[INFO] Audio spielt noch...");
         } else {
             Serial.println("[INFO] Nichts wird abgespielt.");
         }
-        lastCheck = millis();
+        lastStatusMillis = millis();
     }
+
+    updateDisplay();
+    delay(10);
 }

@@ -1,5 +1,6 @@
 #include "NetworkManager.h"
 #include <HTTPClient.h>
+#include <time.h>
 
 // WiFi initialisieren (Stand gestern)
 void initWiFi() {
@@ -16,6 +17,29 @@ void initWiFi() {
         Serial.println("\n[WIFI] Verbunden! IP: " + WiFi.localIP().toString());
     } else {
         Serial.println("\n[WIFI] Verbindung fehlgeschlagen!");
+    }
+}
+
+void initTimeSync() {
+    if (!isConnected()) {
+        Serial.println("[NTP] Kein WiFi, Zeitsync wird übersprungen.");
+        return;
+    }
+
+    Serial.println("[NTP] Synchronisiere Uhrzeit...");
+    configTzTime(TIMEZONE, NTP_SERVER_1, NTP_SERVER_2);
+
+    struct tm timeInfo;
+    unsigned long startAttempt = millis();
+    while (!getLocalTime(&timeInfo) && millis() - startAttempt < 15000) {
+        delay(500);
+        Serial.print(".");
+    }
+
+    if (getLocalTime(&timeInfo)) {
+        Serial.println("\n[NTP] Uhrzeit synchronisiert.");
+    } else {
+        Serial.println("\n[NTP] Zeitsynchronisation fehlgeschlagen.");
     }
 }
 
