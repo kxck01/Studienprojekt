@@ -8,6 +8,7 @@
 
 
 void initWiFi();
+void initTimeSync();
 bool isConnected();
 int sendAudioToN8n(const char* filePath, const char* downloadPath);
 
