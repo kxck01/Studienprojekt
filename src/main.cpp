@@ -1,22 +1,16 @@
 #include <Arduino.h>
-#include "AudioManager.h"
 #include "Config.h"
 #include "DisplayManager.h"
 #include "NetworkManager.h"
 #include "SDCardManager.h"
+#include "PlaybackManager.h"
 
 void setup() {
     Serial.begin(115200);
     delay(2000);
-    Serial.println("\n=== SYSTEM START ===");
+    Serial.println("\n=== AUDIO PLAYER TEST ===");
 
-    // 1. SD-Karte fuer den Display-Test voruebergehend deaktiviert
-    // if (!SD.begin(SD_CS)) {
-    //     Serial.println("[ERROR] SD-Karte konnte nicht geladen werden!");
-    //     while (true); // Stoppen, wenn keine SD da ist
-    // }
-    // Serial.println("[OK] SD-Karte bereit.");
-
+    
     // 2. WiFi verbinden (Nutzt die Funktion aus deinem NetworkManager)
     initWiFi();
 
@@ -28,37 +22,40 @@ void setup() {
         Serial.println("[WARN] Display konnte nicht initialisiert werden.");
     }
 
-    // 3. Audio-, Aufnahme- und n8n-Teil fuer den Display-Test voruebergehend deaktiviert
-    // if (!initAudio()) {
-    //     Serial.println("[ERROR] Audio-Initialisierung fehlgeschlagen!");
-    //     while (true);
-    // }
-    //
-    // Serial.println("\n--- TEST-SEQUENZ STARTET IN 5 SEKUNDEN ---");
-    // delay(5000);
-    //
-    // startRecording("/test_aufnahme.wav");
-    //
-    // if (isConnected()) {
-    //     Serial.println("\n[n8n] Starte Datentransfer...");
-    //     int result = sendAudioToN8n("/test_aufnahme.wav", "/antwort.wav");
-    //
-    //     if (result == 200) {
-    //         Serial.println("[OK] n8n hat geantwortet und Datei wurde auf SD gespeichert.");
-    //     } else {
-    //         Serial.printf("[ERROR] n8n Kommunikation fehlgeschlagen. Code: %d\n", result);
-    //     }
-    // } else {
-    //     Serial.println("[ERROR] Keine WiFi-Verbindung fuer n8n Upload.");
-    // }
-    //
-    // Serial.println("\n--- TEST BEENDET ---");
-    // Serial.println("Du kannst die SD-Karte jetzt am PC prüfen.");
-    // Serial.println("Die Datei 'test_aufnahme.wav' sollte jetzt abspielbar sein.");
+    // 1. SD-Karte über deinen Manager initialisieren
+    if (!initSDCard()) {
+        Serial.println("[ERROR] SD-Karte konnte nicht gestartet werden!");
+        while (true); 
+    }
+
+    // 2. Lautsprecher-Pins konfigurieren
+    player.begin();
+
+    // 3. Prüfen, ob Test-Datei existiert
+    if (SD.exists("/antwort.mp3")) {
+        Serial.println("[OK] Datei gefunden. Starte Wiedergabe...");
+        player.playWav("/antwort.mp3");
+    } else {
+        Serial.println("[ERROR] Datei /antwort.mp3 nicht auf SD gefunden!");
+        Serial.println("Stelle sicher, dass eine Datei mit diesem Namen existiert.");
+    }
 }
 
 void loop() {
+    // Ganz wichtig: Der PlaybackManager braucht Rechenzeit!
+    player.loop();
+
+    // Status-Update alle 5 Sekunden im Serial Monitor
+    static unsigned long lastCheck = 0;
+    if (millis() - lastCheck > 5000) {
+        if (player.isPlaying()) {
+            Serial.println("[INFO] Audio spielt noch...");
+        } else {
+            Serial.println("[INFO] Nichts wird abgespielt.");
+        }
+        lastCheck = millis();
+    }
+
     updateDisplay();
-    // updateAudio();
     delay(10);
 }

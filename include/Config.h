@@ -35,9 +35,8 @@ const char* const TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 #define MIC_I2S_SCK   6
 
 // --- I2S Lautsprecher (MAX98357A) ---
-// Sorgt für die Sprachausgabe der n8n-Antwort
-#define SPK_I2S_BCK   1
-#define SPK_I2S_LRCK  2
-#define SPK_I2S_DOUT  42
+#define SPK_I2S_BCK   17
+#define SPK_I2S_LRCK  18
+#define SPK_I2S_DOUT  8
 
 #endif
