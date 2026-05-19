@@ -4,8 +4,8 @@
 #include <Arduino.h>
 
 // --- WiFi & n8n ---
-const char* const WIFI_SSID = "FRITZ!Box WLAN 3370";
-const char* const WIFI_PASS = "FlobbogoenntInternet";
+const char* const WIFI_SSID = "Enter SSID here";
+const char* const WIFI_PASS = "Enter password here";
 const char* const N8N_WEBHOOK_URL = "your-n8n-webhook-url";
 
 // --- NTP / Uhrzeit ---
