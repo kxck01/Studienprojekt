@@ -45,9 +45,6 @@ bool initAudio() {
     return true;
 }
 
-void updateAudio() {
-    player.loop();
-}
 
 void writeWavHeader(File &file, size_t dataSize) {
     uint32_t sampleRate = 16000;

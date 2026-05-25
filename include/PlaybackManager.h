@@ -7,18 +7,10 @@
 #include "SD.h"
 #include "FS.h"
 
-class PlaybackManager {
-public:
-    PlaybackManager();
-    void begin();
-    void playWav(const char* filename);
-    void loop(); // Muss in der main loop() aufgerufen werden
-    bool isPlaying();
-
-private:
-    Audio audio;
-};
-
-extern PlaybackManager player;
+// Freie Funktionen im selben prozeduralen Stil wie die anderen Manager
+void initPlayback();
+void playWav(const char* filename);
+void handlePlaybackLoop(); // Umbenannt, um Namenskonflikte im Haupt-Loop zu vermeiden
+bool isAudioPlaying();     // Umbenannt für klare, freie Lesbarkeit
 
 #endif

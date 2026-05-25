@@ -1,4 +1,4 @@
-#include "DisplayManager.h"
+/*#include "DisplayManager.h"
 
 #include <SPI.h>
 #include <Adafruit_GFX.h>
@@ -75,4 +75,4 @@ bool initDisplay() {
 
 void updateDisplay() {
     renderClock(false);
-}
+}*/

@@ -4,23 +4,23 @@
 #include <Arduino.h>
 
 // --- WiFi & n8n ---
-const char* const WIFI_SSID = "Enter SSID here";
-const char* const WIFI_PASS = "Enter password here";
-const char* const N8N_WEBHOOK_URL = "your-n8n-webhook-url";
+const char* const WIFI_SSID = "Bettmeralp";
+const char* const WIFI_PASS = "TannEck2011";
+const char* const N8N_WEBHOOK_URL = "https://n8n.keck1.com/webhook-test/c0da9e5e-1062-4191-9acf-3c0de4705036";
 
 // --- NTP / Uhrzeit ---
 const char* const NTP_SERVER_1 = "pool.ntp.org";
 const char* const NTP_SERVER_2 = "de.pool.ntp.org";
 const char* const TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 
-// --- 1.3" IPS LCD (ST7789, SPI) ---
+/*// --- 1.3" IPS LCD (ST7789, SPI) ---
 #define TFT_CS    14
 #define TFT_DC    27
 #define TFT_RST   33
 #define TFT_BL    32
 #define TFT_SCLK  18
 #define TFT_SDA   23
-#define TFT_ROTATION 1  
+#define TFT_ROTATION 1  */
 
 
 // --- SD-Karte (SPI Modus) ---
@@ -38,5 +38,7 @@ const char* const TIMEZONE = "CET-1CEST,M3.5.0/2,M10.5.0/3";
 #define SPK_I2S_BCK   17
 #define SPK_I2S_LRCK  18
 #define SPK_I2S_DOUT  8
+
+#define ButtonPin 0
 
 #endif
