@@ -5,6 +5,8 @@
 #include <HTTPClient.h>
 #include "Config.h"
 #include "SD.h"
+#include <WiFiClientSecure.h> 
+#include <time.h>
 
 
 void initWiFi();

@@ -4,9 +4,9 @@
 #include <Arduino.h>
 
 // --- WiFi & n8n ---
-const char* const WIFI_SSID = "Bettmeralp";
-const char* const WIFI_PASS = "TannEck2011";
-const char* const N8N_WEBHOOK_URL = "https://n8n.keck1.com/webhook-test/c0da9e5e-1062-4191-9acf-3c0de4705036";
+const char* const WIFI_SSID = "WiFi SSID hier einfügen"; // <-- HIER SSID EINTRAGEN!
+const char* const WIFI_PASS = "Password here"; // <-- HIER PASSWORT EINTRAGEN!
+const char* const N8N_WEBHOOK_URL = "Webhook-URL hier einfügen"; // <-- HIER WEBHOOK-URL EINTRAGEN!
 
 // --- NTP / Uhrzeit ---
 const char* const NTP_SERVER_1 = "pool.ntp.org";
